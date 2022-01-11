@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:github_client_flutter/models/index.dart';
 
 import 'Global.dart';
@@ -27,7 +28,7 @@ class UserModel extends ProfileChangedNotifier {
   }
 }
 
-class ThemeModel extends ProfileChangedNotifier {
+class LocaleModel extends ProfileChangedNotifier {
   Locale? getLocal() {
     if (_profile.locale == null) return null;
     var t = _profile.locale!.split("_");
@@ -39,6 +40,20 @@ class ThemeModel extends ProfileChangedNotifier {
   set locale(String locale) {
     if (locale != _locale) {
       _profile.locale = locale;
+      notifyListeners();
+    }
+  }
+}
+
+class ThemeModel extends ProfileChangedNotifier {
+
+  MaterialColor get theme =>
+      Global.themes.firstWhere((element) => element.value == _profile.theme,
+          orElse: () => Colors.blue);
+
+  set theme(ColorSwatch color) {
+    if (color != theme) {
+      _profile.theme = color[500]?.value;
       notifyListeners();
     }
   }

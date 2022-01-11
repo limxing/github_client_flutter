@@ -18,6 +18,8 @@ class Git {
   static Dio dio = Dio(
     BaseOptions(
       baseUrl: 'https://api.github.com/',
+      connectTimeout: 5000,
+      sendTimeout: 5000,
       headers: {
         HttpHeaders.acceptHeader:
             "application/vnd.github.squirrel-girl-preview,"
@@ -48,7 +50,7 @@ class Git {
   Future<User> login(String login, String pwd) async {
     String basic = 'Basic ' + base64.encode(utf8.encode("$login:$pwd"));
 
-    var result = await dio.get("/user/$login",
+    var result = await dio.get("/users/$login",
         options: _options.copyWith(headers: {
           HttpHeaders.authorizationHeader: basic
         }, extra: {
@@ -58,6 +60,7 @@ class Git {
     dio.options.headers[HttpHeaders.authorizationHeader] = basic;
     Global.netCache.cache.clear();
     Global.profile.token = basic;
+    print(result.data);
     return User.fromJson(result.data);
   }
 
@@ -68,6 +71,7 @@ class Git {
     }
     var result = await dio.get("user/repos",
         queryParameters: queryParameters, options: _options);
+    print(result.data);
     return result.data.map((e) => Repo.fromJson(e)).toList();
   }
 }

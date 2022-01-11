@@ -28,6 +28,7 @@ class NetCache extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    print("${options.uri}\n${options.headers}");
     if (Global.profile.cache?.enable == true) {
       //判断是否是下拉刷新，应该是请求的时候增加的参数
       bool refresh = options.extra["refresh"] == true;

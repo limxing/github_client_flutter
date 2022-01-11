@@ -22,6 +22,8 @@ class Global {
 
   static NetCache netCache = NetCache();
 
+  static List<MaterialColor> get themes => _themes;
+
   static Future init() async {
     _preferences = await SharedPreferences.getInstance();
     var _profile = _preferences?.getString("profile");
